@@ -14,7 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      financial_profiles: {
+        Row: {
+          created_at: string
+          fixed_expenses: number
+          id: string
+          investments: number
+          liquid_savings: number
+          monthly_income: number
+          other_income: number
+          updated_at: string
+          user_id: string
+          variable_expenses: number
+        }
+        Insert: {
+          created_at?: string
+          fixed_expenses?: number
+          id?: string
+          investments?: number
+          liquid_savings?: number
+          monthly_income?: number
+          other_income?: number
+          updated_at?: string
+          user_id: string
+          variable_expenses?: number
+        }
+        Update: {
+          created_at?: string
+          fixed_expenses?: number
+          id?: string
+          investments?: number
+          liquid_savings?: number
+          monthly_income?: number
+          other_income?: number
+          updated_at?: string
+          user_id?: string
+          variable_expenses?: number
+        }
+        Relationships: []
+      }
+      loans: {
+        Row: {
+          created_at: string
+          emi: number
+          id: string
+          interest_rate: number
+          lender: string
+          loan_type: string
+          name: string
+          outstanding: number
+          principal: number
+          tenure_months: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emi?: number
+          id?: string
+          interest_rate?: number
+          lender?: string
+          loan_type?: string
+          name?: string
+          outstanding?: number
+          principal?: number
+          tenure_months?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emi?: number
+          id?: string
+          interest_rate?: number
+          lender?: string
+          loan_type?: string
+          name?: string
+          outstanding?: number
+          principal?: number
+          tenure_months?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
