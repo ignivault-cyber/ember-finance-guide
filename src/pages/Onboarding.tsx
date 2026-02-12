@@ -7,16 +7,17 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Trash2, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-
+import { toast } from 'sonner';
 
 function generateId() {
   return Math.random().toString(36).slice(2, 10);
 }
 
 export default function Onboarding() {
-  const { profile, setProfile } = useFinance();
+  const { profile, setProfile, saveProfile } = useFinance();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [saving, setSaving] = useState(false);
 
   const [income, setIncome] = useState(profile.monthlyIncome.toString());
   const [otherIncome, setOtherIncome] = useState(profile.otherIncome.toString());
@@ -53,7 +54,7 @@ export default function Onboarding() {
 
   const removeLoan = (id: string) => setLoans(prev => prev.filter(l => l.id !== id));
 
-  const save = () => {
+  const save = async () => {
     const p: FinancialProfile = {
       monthlyIncome: Number(income) || 0,
       otherIncome: Number(otherIncome) || 0,
@@ -64,7 +65,15 @@ export default function Onboarding() {
       loans,
     };
     setProfile(p);
-    navigate('/dashboard');
+    setSaving(true);
+    try {
+      await saveProfile(p);
+      toast.success('Financial data saved!');
+      navigate('/dashboard');
+    } catch (err) {
+      toast.error('Failed to save data');
+    }
+    setSaving(false);
   };
 
   const steps = [
@@ -178,7 +187,6 @@ export default function Onboarding() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        {/* Progress */}
         <div className="flex gap-2 mb-8">
           {steps.map((_, i) => (
             <div key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= step ? 'bg-primary' : 'bg-muted'}`} />
@@ -191,12 +199,7 @@ export default function Onboarding() {
         {steps[step].content}
 
         <div className="flex justify-between mt-8">
-          <Button
-            variant="ghost"
-            onClick={() => setStep(s => s - 1)}
-            disabled={step === 0}
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" onClick={() => setStep(s => s - 1)} disabled={step === 0} className="text-muted-foreground">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back
           </Button>
           {step < steps.length - 1 ? (
@@ -204,8 +207,8 @@ export default function Onboarding() {
               Next <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
-            <Button onClick={save} className="bg-primary text-primary-foreground hover:bg-primary/90">
-              View Dashboard <ArrowRight className="w-4 h-4 ml-2" />
+            <Button onClick={save} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90">
+              {saving ? 'Saving...' : 'View Dashboard'} <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           )}
         </div>

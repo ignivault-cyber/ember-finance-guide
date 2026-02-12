@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Brain, TrendingUp, Calculator, BarChart3, Zap } from 'lucide-react';
@@ -18,9 +19,10 @@ const fadeUp = {
 };
 
 export default function Index() {
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen bg-gradient-hero">
-      {/* Nav */}
       <header className="container max-w-6xl mx-auto flex items-center justify-between py-6 px-4">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
@@ -29,16 +31,23 @@ export default function Index() {
           <span className="font-display font-bold text-xl">LoanWise</span>
         </div>
         <div className="flex gap-3">
-          <Link to="/dashboard">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">Dashboard</Button>
-          </Link>
-          <Link to="/onboarding">
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">Get Started</Button>
-          </Link>
+          {user ? (
+            <Link to="/dashboard">
+              <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">Dashboard</Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/auth">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">Sign In</Button>
+              </Link>
+              <Link to="/auth">
+                <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">Get Started</Button>
+              </Link>
+            </>
+          )}
         </div>
       </header>
 
-      {/* Hero */}
       <section className="container max-w-6xl mx-auto px-4 pt-20 pb-32 text-center">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
           <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 text-sm text-primary mb-6">
@@ -51,8 +60,8 @@ export default function Index() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
             Your digital financial advisor that analyzes debt, optimizes repayment, and forecasts risks — so you can become debt-free faster.
           </p>
-          <div className="flex gap-4 justify-center">
-            <Link to="/onboarding">
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link to={user ? "/onboarding" : "/auth"}>
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow text-base px-8">
                 Check Your Financial Health <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
@@ -66,7 +75,6 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* Features */}
       <section className="container max-w-6xl mx-auto px-4 pb-24">
         <h2 className="text-2xl md:text-3xl font-bold font-display text-center mb-12">
           Everything you need to <span className="text-gradient-primary">take control</span>
@@ -92,12 +100,11 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="container max-w-6xl mx-auto px-4 pb-24 text-center">
         <div className="bg-gradient-card rounded-3xl p-12 border border-border shadow-elevated">
           <h2 className="text-2xl md:text-3xl font-bold font-display mb-4">Ready to become debt-free?</h2>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">Enter your financial details and get instant, actionable insights.</p>
-          <Link to="/onboarding">
+          <Link to={user ? "/onboarding" : "/auth"}>
             <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow text-base px-8">
               Start Now — It's Free <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
@@ -105,7 +112,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-border py-8">
         <div className="container max-w-6xl mx-auto px-4 text-center text-xs text-muted-foreground">
           <p>⚠️ This platform provides financial analysis tools, not certified financial advice.</p>
