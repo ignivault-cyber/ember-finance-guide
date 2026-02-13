@@ -5,6 +5,7 @@ import HealthScoreCard from '@/components/HealthScoreCard';
 import MetricsGrid from '@/components/MetricsGrid';
 import RiskAlerts from '@/components/RiskAlerts';
 import DashboardCharts from '@/components/DashboardCharts';
+import MLInsights from '@/components/MLInsights';
 import RepaymentComparison from '@/components/RepaymentComparison';
 import ScenarioSimulator from '@/components/ScenarioSimulator';
 import AIChatbot from '@/components/AIChatbot';
@@ -73,6 +74,7 @@ export default function Dashboard() {
 
         <MetricsGrid profile={profile} />
         <DashboardCharts profile={profile} />
+        <MLInsights />
         <RepaymentComparison profile={profile} />
         <ScenarioSimulator profile={profile} />
 

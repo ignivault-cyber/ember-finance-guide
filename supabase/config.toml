@@ -2,3 +2,6 @@ project_id = "ufscbkzvmzqezaegpagn"
 
 [functions.financial-advisor]
 verify_jwt = false
+
+[functions.ml-predictions]
+verify_jwt = false
